@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "PROJECT_NAME"
+name = "transcriptor"
 version = "0.1.0"
-description = "YOUR_DESCRIPTION."
+description = "Transcribe speech to text with a small GUI"
 authors = [
     { name="Bruno Schilling", email="bruno.schilling@protonmail.ch" }
 ]

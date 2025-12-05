@@ -14,7 +14,7 @@ license-files = ["LICENSE"]
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-	"peng_ui>=0.3.3",
+	"peng_ui>=0.3.5",
 	"sounddevice>=0.5",
 	"numpy>=2.1"
 ]

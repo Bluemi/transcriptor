@@ -7,6 +7,7 @@ import sounddevice as sd
 import pygame as pg
 
 from peng_ui.elements import TextField, Label
+from peng_ui.utils import Align
 from peng_ui.viewer import Viewer
 
 from transcriptor.whisper import WhisperDecoder
@@ -51,12 +52,16 @@ class MyViewer(Viewer):
             pg.Rect(30, 30, text_field_width, text_field_height), "Recorded text"
         )
 
-        self.audio_device_label = Label(pg.Rect(text_field_width + 30 + 50, 60, 120, 40), f"Audio device: ")
+        self.audio_device_label = Label(
+            pg.Rect(text_field_width + 30 + 50, 60, 120, 40), f"Audio device: ", align=Align.LEFT
+        )
         self.audio_device_label2 = Label(
             pg.Rect(text_field_width + 30 + 50, 110, 120, 40),
-            f"{self.device_index} - {self.device_info[self.device_index]['name']}"
+            f"{self.device_index} - {self.device_info[self.device_index]['name']}", align=Align.LEFT
         )
-        self.audio_device_label3 = Label(pg.Rect(text_field_width + 170 + 50, 160, 120, 40), f"Use Up/Down to change audio device ")
+        self.audio_device_label3 = Label(
+            pg.Rect(text_field_width + 30 + 50, 160, 120, 40), f"Use Up/Down to change audio device ", align=Align.LEFT
+        )
 
         self.input_stream: Optional[sd.InputStream] = None
         self.buffer = AudioBuffer()

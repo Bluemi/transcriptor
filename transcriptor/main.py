@@ -100,7 +100,7 @@ class MyViewer(Viewer):
             else:
                 print(f'recorded {recording.shape[0] / SAMPLERATE} seconds')
                 res_text = self.whisper(recording)
-                self.text_field.text = res_text
+                self.text_field.set_text(res_text)
             self.buffer.clear()
             self.input_stream = None
 

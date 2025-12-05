@@ -10,6 +10,8 @@ import pygame as pg
 from peng_ui.elements import TextField, Label
 from peng_ui.viewer import Viewer
 
+from transcriptor.whisper import WhisperDecoder
+
 SAMPLERATE = 16000
 
 
@@ -59,6 +61,8 @@ class MyViewer(Viewer):
         self.input_stream: Optional[sd.InputStream] = None
         self.buffer = AudioBuffer()
 
+        self.whisper = WhisperDecoder()
+
 
     def handle_events(self):
         for event in pg.event.get():
@@ -80,6 +84,8 @@ class MyViewer(Viewer):
                     print('No audio recorded')
                 else:
                     print(f'recorded {recording.shape[0] / SAMPLERATE} seconds')
+                    res_text = self.whisper(recording)
+                    self.text_field.text = res_text
                     write('recording.wav', SAMPLERATE, recording)
                 self.buffer.clear()
                 self.input_stream = None

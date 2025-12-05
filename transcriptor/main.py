@@ -2,7 +2,6 @@
 
 from typing import Optional
 
-from scipy.io.wavfile import write
 import numpy as np
 import sounddevice as sd
 import pygame as pg
@@ -38,7 +37,8 @@ class MyViewer(Viewer):
         screen_width, screen_height = self.screen.get_size()
 
         self.device_info = sd.query_devices()
-        self.device_index = 9  # sd.default.device[0]
+        print(self.device_info)
+        self.device_index = sd.default.device[0]
 
         label_width = 120
         self.label = Label(
@@ -86,7 +86,6 @@ class MyViewer(Viewer):
                     print(f'recorded {recording.shape[0] / SAMPLERATE} seconds')
                     res_text = self.whisper(recording)
                     self.text_field.text = res_text
-                    write('recording.wav', SAMPLERATE, recording)
                 self.buffer.clear()
                 self.input_stream = None
             elif event.type == pg.KEYDOWN and event.key == pg.K_DOWN:

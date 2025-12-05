@@ -69,25 +69,14 @@ class MyViewer(Viewer):
             if event.type == pg.QUIT:
                 self.running = False
                 break
-            elif event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
+            elif event.type == pg.KEYDOWN and event.key == pg.K_SPACE and not self.text_field.is_focused:
                 self.label.set_text('Recording...')
                 self.input_stream = sd.InputStream(
                     samplerate=SAMPLERATE, callback=self.buffer, device=self.device_index, dtype='int16'
                 )
                 self.input_stream.start()
             elif event.type == pg.KEYUP and event.key == pg.K_SPACE:
-                self.label.set_text('Press Space to record')
-                self.input_stream.stop()
-                self.input_stream.close()
-                recording = self.buffer.get()
-                if len(recording) == 0:
-                    print('No audio recorded')
-                else:
-                    print(f'recorded {recording.shape[0] / SAMPLERATE} seconds')
-                    res_text = self.whisper(recording)
-                    self.text_field.text = res_text
-                self.buffer.clear()
-                self.input_stream = None
+                self.transcribe_audio()
             elif event.type == pg.KEYDOWN and event.key == pg.K_DOWN:
                 if self.device_index > 0:
                     self.device_index -= 1
@@ -99,6 +88,21 @@ class MyViewer(Viewer):
 
             for elem in self.iter_elements():
                 elem.handle_event(event)
+
+    def transcribe_audio(self):
+        if self.input_stream is not None:
+            self.label.set_text('Press Space to record')
+            self.input_stream.stop()
+            self.input_stream.close()
+            recording = self.buffer.get()
+            if len(recording) == 0:
+                print('No audio recorded')
+            else:
+                print(f'recorded {recording.shape[0] / SAMPLERATE} seconds')
+                res_text = self.whisper(recording)
+                self.text_field.text = res_text
+            self.buffer.clear()
+            self.input_stream = None
 
 
 if __name__ == '__main__':

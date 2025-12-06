@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-
+from pathlib import Path
 from typing import Optional
 
 import numpy as np
 import sounddevice as sd
+import soundfile as sf
 import pygame as pg
 
 from peng_ui.elements import TextField, Label
@@ -67,6 +68,7 @@ class MyViewer(Viewer):
         self.buffer = AudioBuffer()
 
         self.whisper = WhisperDecoder()
+        self.audio_index = 0
 
 
     def handle_events(self):
@@ -105,9 +107,17 @@ class MyViewer(Viewer):
             else:
                 print(f'recorded {recording.shape[0] / SAMPLERATE} seconds')
                 res_text = self.whisper(recording)
+                self.dump_audio(recording)
                 self.text_field.set_text(res_text)
             self.buffer.clear()
             self.input_stream = None
+
+    def dump_audio(self, recording: np.ndarray):
+        audio_root = Path('audios')
+        audio_root.mkdir(exist_ok=True)
+        filename = audio_root / f'audio_{self.audio_index:>03}.wav'
+        self.audio_index += 1
+        sf.write(filename, recording, samplerate=16000)
 
 
 if __name__ == '__main__':

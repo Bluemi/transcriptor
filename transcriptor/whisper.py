@@ -1,7 +1,6 @@
 import numpy as np
 import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
-from torchcodec.decoders import AudioDecoder
 
 
 class WhisperDecoder:
@@ -32,3 +31,4 @@ class WhisperDecoder:
     def __call__(self, audio: np.ndarray) -> str:
         result = self.pipe(audio)
         return result["text"]
+    
